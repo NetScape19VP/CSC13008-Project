@@ -1,2 +1,3 @@
-# CSC13008-Project
-whiteboard online
+# **CSC13008-Project**
+
+Project of course `web application development`.
