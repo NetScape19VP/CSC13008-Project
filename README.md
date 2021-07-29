@@ -1,7 +1,7 @@
 # CSC13008-Project
 Project of course `web application development`.
 
-after down load this project run 'npm install' for pagekage installing
+## Note:
 
-To Start The Server on PORT 3000
-npm start
+- After down load this project run `npm install` for package installing
+- To start server on PORT 3000: `npm start`
