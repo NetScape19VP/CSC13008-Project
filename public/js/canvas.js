@@ -67,7 +67,7 @@ function sendNoti(what) {
     socket.emit("s", what);
 }
 
-//* chose color
+// chose color
 function color(obj) {
     switch (obj.id) {
         case "green":
@@ -94,7 +94,6 @@ function color(obj) {
     }
     if (x == "white") y = 14;
     else y = 2;
-
 }
 
 //* set line width
@@ -126,17 +125,17 @@ function draw() {
 }
 
 function drawDot() {
-    let ctx_temp = canvas.getContext("2d");
+    let ctxTemp = canvas.getContext("2d");
 
     console.log("dot drew");
     let radius = y / 2;
     console.log(radius);
-    ctx_temp.beginPath();
-    ctx_temp.fillStyle = x;
-    ctx_temp.strokeStyle = 'green'
-    ctx_temp.arc(currX, currY, radius, 0, Math.PI * 2);
-    ctx_temp.fill();
-    ctx_temp.closePath();
+    ctxTemp.beginPath();
+    ctxTemp.fillStyle = x;
+    ctxTemp.strokeStyle = 'green'
+    ctxTemp.arc(currX, currY, radius, 0, Math.PI * 2);
+    ctxTemp.fill();
+    ctxTemp.closePath();
 
     sendDotJason({
         'radius': radius,

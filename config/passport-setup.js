@@ -3,14 +3,14 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
 const keys = require('./keys')
 const myURL = require('./myURL').myURL
-const User = require('../models/users')
+const user = require('../models/users')
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-    User.findById(id).then((user) => {
+    user.findById(id).then((user) => {
         done(null, user);
     });
 });
@@ -24,17 +24,17 @@ passport.use(
 
     }, (accesToken, refreshToken, profile, done) => {
         //passport callback func
-        User.findOne({ userId: profile.id, accountType: 'google' }).then((currentUser) => {
+        user.findOne({ userId: profile.id, accountType: 'google' }).then((currentUser) => {
 
             //check if user already exist in  DB
             if (currentUser) {
                 //user exist
-                console.log(profile.id + ' aldready exist')
+                console.log(profile.id + ' already exist')
                 done(null, currentUser)
             }
             else {
                 // if not, create a new user
-                new User({
+                new user({
                     accountType: 'google',
                     userId: profile.id,
                     name: profile.displayName,
@@ -55,19 +55,19 @@ passport.use(
         clientSecret: keys.facebook.clientSecret,
         callbackURL: `${myURL}/auth/facebook/callback`,
         profileFields: ['id', 'displayName', 'picture.type(large)']
-    }, (accesToken, refreshToken, profile, done) => {
+    }, (accessToken, refreshToken, profile, done) => {
         console.log(profile);
         //passport callback func
-        User.findOne({ userId: profile.id, accountType: 'facebook' }).then((currentUser) => {
+        user.findOne({ userId: profile.id, accountType: 'facebook' }).then((currentUser) => {
             //check if user already exist in  DB
             if (currentUser) {
                 //user exist
-                console.log(profile.id + ' aldready exist')
+                console.log(profile.id + ' already exist')
                 done(null, currentUser)
             }
             else {
                 // if not, create a new user
-                new User({
+                new user({
                     accountType: 'facebook',
                     userId: profile.id,
                     name: profile.displayName,
