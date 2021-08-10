@@ -1,14 +1,20 @@
-const express = require('express')
 const session = require('express-session')
 const passport = require('passport')
-const app = express()
 const port = 3000
-const server = require("http").Server(app)
-const io = require("socket.io")(server)
 const authRouter = require('../routes/auth-routes');
 const boardRouter = require('../routes/board-routes')
 const passportSetup = require('../config/passport-setup')
 const keys = require('../config/keys')
+const path = require('path');
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
+const formatMessage = require('../utils/messages');
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('../utils/user');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
 //set up mongodb
 const mongoose = require('mongoose');
@@ -82,6 +88,47 @@ io.on("connection", function (socket) {
         console.log("send dot");
         socket.broadcast.emit("Server-send-dot-as-json", data);
     })
+
+    // ===================
+    // == Chat handling ==
+    // ===================
+
+    socket.on('joinRoom', ({ username, room }) => {
+		//const user = userJoin(socket.id, username, room);
+		const user = userJoin(socket.id, username, room);
+        socket.join(user.room);
+
+		// welcome message
+		socket.emit('message', formatMessage('bot', 'Welcome to breakout room'));
+
+		// broadcast when a member join -- except the member was connected
+		socket.broadcast.to(user.room).emit('message', formatMessage('bot', `${user.username} has joined this room`));
+		
+		// send user and room infos
+		io.to(user.room).emit("roomUsers", {
+			room: user.room,
+			users: getRoomUsers(user.room)
+		});
+	});
+
+	// run when member disconnect
+	socket.on('disconnect', () => {
+		const user = userLeave(socket.id);
+
+		if (user) {
+			io.to(user.room).emit('message', formatMessage('bot', `${user.username} has left breakout room`));
+		}
+
+	});
+	//broadcast to all
+	//io.emit();
+
+	//listen for chatMessage
+	socket.on('chatMessage', msg => {
+		const user = getCurrentUser(socket.id);
+
+		io.to(user.room).emit('message', formatMessage(user.username, msg));
+	});
 });
 
 app.get("/", function (req, res) {

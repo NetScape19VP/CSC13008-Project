@@ -150,7 +150,7 @@ function erase() {
     if (m) {
         ctx.clearRect(0, 0, w, h);
         console.log("clear all");
-        socket.emit("Client-clear-all");
+        socket_.emit("Client-clear-all");
         // sendDataURL();
     }
 }

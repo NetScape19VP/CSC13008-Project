@@ -4,7 +4,7 @@ window.requestAnimFrame = (function (callback) {
         window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.oRequestAnimationFrame ||
-        window.msRequestAnimaitonFrame ||
+        window.msRequestAnimationFrame ||
         function (callback) {
             window.setTimeout(callback, 1000 / 60); //* 60fps
         };
@@ -40,7 +40,7 @@ function sendContext(line) {
     socket.emit("Client-send-context", line);
 }
 
-// deserialize dataURL to image and apply to casvas
+// deserialize dataURL to image and apply to canvas
 function deserialize(data, canvas) {
     var img = new Image();
     img.onload = function () {
@@ -52,7 +52,7 @@ function deserialize(data, canvas) {
     img.src = data;
 }
 
-//apply (draw) canvas contex to canvas
+//apply (draw) canvas context to canvas
 function applyContext(data) {
     let pX, pY, cX, cY;
     pX = data.prevX;
