@@ -11,7 +11,7 @@ window.requestAnimFrame = (function (callback) {
 })();
 
 //! socket.io listea at https://co-op-whiteboard.herokuapp.com
-var socket = io('http://localhost:3000/');
+
 
 $(document).ready(() => {
     socket.on("Server-send-dataURL", (dataURL) => {

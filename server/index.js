@@ -16,21 +16,22 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
+const moment = require('moment');
+
 //set up mongodb
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://nmphat-mongodb:v!npXf9X277i_XQ@test.vhxrf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    },
-    (err) => {
-        if (!err) {
-            console.log('ket noi database thanh cong');
-        }
-        else {
-            console.log('ket noi database that bai');
-        }
-    });
+    }
+);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    // we're connected!
+    console.log('ket noi database thanh cong');
+});
 mongoose.set('useFindAndModify', false);
 
 
@@ -66,9 +67,9 @@ server.listen(process.env.PORT || port);
 
 
 // * server and client
-io.on("connection", function (socket) {
+io.on("connection", async (socket) => {
     console.log(socket.id, " vua ket noi");
-    socket.emit("Server-send-dataURL", dataURL_saving);
+    //socket.emit("Server-send-dataURL", dataURL_saving);
     socket.on("disconnect", function () {
         console.log(socket.id, " vua ngat ket noi");
     });
@@ -93,42 +94,43 @@ io.on("connection", function (socket) {
     // == Chat handling ==
     // ===================
 
-    socket.on('joinRoom', ({ username, room }) => {
-		//const user = userJoin(socket.id, username, room);
-		const user = userJoin(socket.id, username, room);
-        socket.join(user.room);
+    socket.on('joinRoom', (data) => {
+        //const user = userJoin(socket.id, username, room);
+        socket.userInfo = userJoin(socket.id, data.user, data.room);
 
-		// welcome message
-		socket.emit('message', formatMessage('bot', 'Welcome to breakout room'));
+        console.log(socket.userInfo.user.name, socket.id);
+        socket.join(socket.userInfo.room);
 
-		// broadcast when a member join -- except the member was connected
-		socket.broadcast.to(user.room).emit('message', formatMessage('bot', `${user.username} has joined this room`));
-		
-		// send user and room infos
-		io.to(user.room).emit("roomUsers", {
-			room: user.room,
-			users: getRoomUsers(user.room)
-		});
-	});
+        // welcome message
+        socket.emit('Server-notify', {bot: 'bot', notification: 'Welcome to breakout room', time: moment().format('h:mm a')});
 
-	// run when member disconnect
-	socket.on('disconnect', () => {
-		const user = userLeave(socket.id);
+        // broadcast when a member join -- except the member was connected
+        socket.broadcast.to(socket.userInfo.room).emit('Server-notify', {bot: 'bot', notification: `${socket.userInfo.user.name} has joined this room`, time: moment().format('h:mm a')});
 
-		if (user) {
-			io.to(user.room).emit('message', formatMessage('bot', `${user.username} has left breakout room`));
-		}
+        // send user and room infos
+        io.to(socket.userInfo.room).emit("roomUsers", {
+            room: socket.userInfo.room,
+            users: getRoomUsers(socket.userInfo.room)
+        });
+    });
 
-	});
-	//broadcast to all
-	//io.emit();
+    // run when member disconnect
+    socket.on('disconnect', () => {
+        const user = userLeave(socket.id);
 
-	//listen for chatMessage
-	socket.on('chatMessage', msg => {
-		const user = getCurrentUser(socket.id);
+        if (user) {
+            io.to(user.room).emit('message', formatMessage('bot', `${user.username} has left breakout room`));
+        }
 
-		io.to(user.room).emit('message', formatMessage(user.username, msg));
-	});
+    });
+    //broadcast to all
+    //io.emit();
+
+    //listen for chatMessage
+    socket.on('chatMessage', msg => {
+        io.to(socket.userInfo.room).emit('message', formatMessage(socket.userInfo.user, msg));
+        //io.to(user.room).emit('message', formatMessage(user.username, msg));
+    });
 });
 
 app.get("/", function (req, res) {
