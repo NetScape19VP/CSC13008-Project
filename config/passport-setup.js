@@ -3,14 +3,14 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
 const keys = require('./keys')
 const myURL = require('./myURL').myURL
-const user = require('../models/users')
+const User = require('../models/users')
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-    user.findById(id).then((user) => {
+    User.findById(id).then((user) => {
         done(null, user);
     });
 });
@@ -24,7 +24,7 @@ passport.use(
 
     }, (accessToken, refreshToken, profile, done) => {
         //passport callback func
-        user.findOne({ userId: profile.id, accountType: 'google' }).then((currentUser) => {
+        User.findOne({ userId: profile.id, accountType: 'google' }).then((currentUser) => {
 
             //check if user already exist in  DB
             if (currentUser) {
@@ -58,7 +58,7 @@ passport.use(
     }, (accessToken, refreshToken, profile, done) => {
         console.log(profile);
         //passport callback func
-        user.findOne({ userId: profile.id, accountType: 'facebook' }).then((currentUser) => {
+        User.findOne({ userId: profile.id, accountType: 'facebook' }).then((currentUser) => {
             //check if user already exist in  DB
             if (currentUser) {
                 //user exist

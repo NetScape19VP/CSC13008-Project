@@ -19,8 +19,9 @@ const io = socketio(server);
 const moment = require('moment');
 
 //set up mongodb
+const dbName = 'myFirstDatabase';
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://nmphat-mongodb:v!npXf9X277i_XQ@test.vhxrf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://nmphat-mongodb:v!npXf9X277i_XQ@test.vhxrf.mongodb.net/${dbName}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -32,8 +33,9 @@ db.once('open', function () {
     // we're connected!
     console.log('ket noi database thanh cong');
 });
-mongoose.set('useFindAndModify', false);
 
+
+mongoose.set('useFindAndModify', false);
 
 var dataURL_saving = "";
 
@@ -68,10 +70,10 @@ server.listen(process.env.PORT || port);
 
 // * server and client
 io.on("connection", async (socket) => {
-    console.log(socket.id, " vua ket noi");
+    console.log(socket.id, " connected");
     //socket.emit("Server-send-dataURL", dataURL_saving);
     socket.on("disconnect", function () {
-        console.log(socket.id, " vua ngat ket noi");
+        console.log(socket.id, " disconnected");
     });
     socket.on("Client-send-dataURL", function (dataURL) {
         dataURL_saving = dataURL;

@@ -1,23 +1,14 @@
 const router = require('express').Router();
 
-//check if user has logged in
-const authCheck = (req, res, next) => {
-    if (!req.user) {
-        res.redirect('/');
-    } else {
-        next();
-    }
-};
+const authCheck = require('../controllers/authCheck').authCheck;
+const boardControllers = require('../controllers/board-controllers')
 
-router.get('/', authCheck, (req, res) => {
-    res.render('mainPage', { user: req.user })
-});
+router.get('/', authCheck, boardControllers.mainPageController);
 
-router.get('/:roomID', authCheck, (req, res) => {
-    console.log(req.user.name);
-    res.render('whiteboard', {
-        user: req.user,
-        room: req.params.roomID
-    })
-})
+////! handle create board create route MUST be above
+// router.get('/create', (req, res, next) => {
+//     res.send('new board');
+// })
+router.get('/:roomID', authCheck, boardControllers.whiteboardController);
+
 module.exports = router
