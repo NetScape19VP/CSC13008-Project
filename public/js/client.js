@@ -10,7 +10,7 @@ window.requestAnimFrame = (function (callback) {
         };
 })();
 
-//! socket.io listea at https://co-op-whiteboard.herokuapp.com
+//! socket.io listen at https://co-op-whiteboard.herokuapp.com
 
 
 $(document).ready(() => {

@@ -1,19 +1,12 @@
 const chatMessages = document.querySelector('.chat-messages');
 
-
-
-// // get username and room from url
-// const { user, room } = Qs.parse(location.search, {
-// 	ignoreQueryPrefix: true
-// });
-
 //var socket = io('http://localhost:3000/');
 console.log(userLocal, roomLocal);
 // ! join room
 socket.emit('joinRoom', { user: userLocal, room: roomLocal});
 
 // get room and users
-socket.on('roomUsers', ({ room, users}) => {
+socket.on('roomUsers', ({ room, users }) => {
 	console.log('?Room:', room);
 	console.log('?Users:', users);
 
@@ -61,6 +54,7 @@ socket.on('Server-notify', (data) => {
 					 <p class="text">${data.notification}</p>`;
 	chatMessages.appendChild(div);
 })
+
 // add room name to DOM
 function printRoomName(room) {
 	document.getElementById("room-name").innerText = room;

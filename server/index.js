@@ -10,7 +10,7 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const formatMessage = require('../utils/messages');
-const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('../utils/user');
+const { userJoin, userLeave, getRoomUsers } = require('../utils/user');
 
 const app = express();
 const server = http.createServer(app);
@@ -26,6 +26,7 @@ mongoose.connect('mongodb+srv://nmphat-mongodb:v!npXf9X277i_XQ@test.vhxrf.mongod
         useUnifiedTopology: true
     }
 );
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
@@ -68,10 +69,10 @@ server.listen(process.env.PORT || port);
 
 // * server and client
 io.on("connection", async (socket) => {
-    console.log(socket.id, " vua ket noi");
+    console.log('roomID ' + socket.id + " vua ket noi");
     //socket.emit("Server-send-dataURL", dataURL_saving);
     socket.on("disconnect", function () {
-        console.log(socket.id, " vua ngat ket noi");
+        console.log('roomID ' + socket.id + " vua ngat ket noi");
     });
     socket.on("Client-send-dataURL", function (dataURL) {
         dataURL_saving = dataURL;
@@ -95,17 +96,20 @@ io.on("connection", async (socket) => {
     // ===================
 
     socket.on('joinRoom', (data) => {
-        //const user = userJoin(socket.id, username, room);
         socket.userInfo = userJoin(socket.id, data.user, data.room);
 
         console.log(socket.userInfo.user.name, socket.id);
         socket.join(socket.userInfo.room);
 
         // welcome message
-        socket.emit('Server-notify', {bot: 'bot', notification: 'Welcome to breakout room', time: moment().format('h:mm a')});
+        socket.emit('Server-notify', {bot: 'bot', 
+                                      notification: 'Welcome to breakout room', 
+                                      time: moment().format('h:mm a')});
 
         // broadcast when a member join -- except the member was connected
-        socket.broadcast.to(socket.userInfo.room).emit('Server-notify', {bot: 'bot', notification: `${socket.userInfo.user.name} has joined this room`, time: moment().format('h:mm a')});
+        socket.broadcast.to(socket.userInfo.room).emit('Server-notify', {bot: 'bot', 
+                                                                         notification: `${socket.userInfo.user.name} has joined this room`, 
+                                                                         time: moment().format('h:mm a')});
 
         // send user and room infos
         io.to(socket.userInfo.room).emit("roomUsers", {
@@ -129,7 +133,6 @@ io.on("connection", async (socket) => {
     //listen for chatMessage
     socket.on('chatMessage', msg => {
         io.to(socket.userInfo.room).emit('message', formatMessage(socket.userInfo.user, msg));
-        //io.to(user.room).emit('message', formatMessage(user.username, msg));
     });
 });
 

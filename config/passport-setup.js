@@ -29,7 +29,7 @@ passport.use(
             //check if user already exist in  DB
             if (currentUser) {
                 //user exist
-                console.log(profile.id + ' already exist')
+                console.log( 'account ID ' +profile.id + ' already exist')
                 done(null, currentUser)
             }
             else {
