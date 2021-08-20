@@ -2,7 +2,7 @@ const router = require('express').Router();
 const passport = require('passport')
 
 
-//GOOGLE AUTHETICATE
+//GOOGLE AUTHENTICATE
 router.get('/google', passport.authenticate('google', {
     scope: ['email', 'profile']
     // ,

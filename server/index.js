@@ -19,8 +19,9 @@ const io = socketio(server);
 const moment = require('moment');
 
 //set up mongodb
+const dbName = 'myFirstDatabase';
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://nmphat-mongodb:v!npXf9X277i_XQ@test.vhxrf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://nmphat-mongodb:v!npXf9X277i_XQ@test.vhxrf.mongodb.net/${dbName}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -33,8 +34,9 @@ db.once('open', function () {
     // we're connected!
     console.log('ket noi database thanh cong');
 });
-mongoose.set('useFindAndModify', false);
 
+
+mongoose.set('useFindAndModify', false);
 
 var dataURL_saving = "";
 
