@@ -15,16 +15,7 @@
     <input type="text" name="room-name" id="room-name" placeholder="enter room name..." required>
     <button id="btn-create">create room</button>
     
-    <script>
-        let roomID;
-        document.getElementById("btn-join").onclick = () => {
-            roomID = document.getElementById("room-id").value;
-            if (roomID == "") {
-                alert("You've not enter room ID yet.");
-            } else {
-                location.href = `http://localhost:3000/board/${roomID}`;
-            }
-        }
-    </script>
+    <script src="../public/js/joinRoom.js"></script>
+    <script src="../public/js/createRoom.js"></script>
 </body>
 </html>
