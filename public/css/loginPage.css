@@ -1,0 +1,222 @@
+@font-face {
+    font-family: 'KG What A Time';
+    src: url(/font/KGWhatATime.woff);
+}
+
+.vertical-center {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-fluid {
+    background-image: url(/images/home/background.png);
+    background-size: cover;
+}
+
+h1 {
+    font-size: 100px;
+    font-family: 'KG What A Time', sans-serif;
+    color: #26AB7B;
+    text-shadow: 4px 4px 1px #91D7C3;
+}
+
+.btn-block {
+    width: 350px;
+    margin: 0 5px;
+}
+
+.btn-facebook {
+    background-color: #1778F2;
+}
+
+.btn-facebook:hover {
+    background-color: #2a85f5;
+}
+
+.btn-facebook:active {
+    background-color: #0461d3;
+}
+
+.btn-google {
+    background-color: #EA4335;
+}
+
+.btn-google:hover {
+    background-color: #fa6659;
+}
+
+.btn-google:active {
+    background-color: #e41a08;
+}
+
+.btn span {
+    font-size: 20px;
+    color: #fff;
+}
+
+footer {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    color: #FFF;
+    background-color: #26AB7B;
+}
+
+@media (min-width: 300px) {
+    h1 {
+        font-size: 70px;
+        text-shadow: 2px 2px 1px #91D7C3;
+    }
+    .btn span {
+        font-size: 15px;
+    }
+    .btn-block {
+        width: 200px;
+        margin: 5px 5px;
+    }
+}
+
+@media (min-width:576px) {
+    h1 {
+        font-size: 80px;
+    }
+}
+
+@media (min-width:768px) {
+    h1 {
+        font-size: 90px;
+        text-shadow: 3px 3px 1px #91D7C3;
+    }
+    .btn-block {
+        width: 250px;
+    }
+    .btn span {
+        font-size: 20px;
+    }
+}
+
+@media (min-width:992px) {
+    h1 {
+        font-size: 100px;
+    }
+    .btn-block {
+        width: 300px;
+    }
+}
+
+@media (min-width:1200px) {
+    h1 {
+        font-size: 120px;
+        text-shadow: 4px 4px 1px #91D7C3;
+    }
+    .btn-block {
+        width: 350px;
+    }
+    .btn span {
+        font-size: 25px;
+    }
+}
+
+@media (min-width:1400px) {
+    h1 {
+        font-size: 140px;
+    }
+}
+
+/* body {
+    text-align: center;
+    background-image: url(./images/background.svg);
+    background-size: 100vw 150vh;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+.container {
+    margin-top: 30vh;
+}
+
+#text {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 100px;
+    font-family: 'KG What A Time', sans-serif;
+    color: #5ce091;
+    text-shadow: 4px 4px 1px #30ac67;
+}
+
+.button button {
+    display: inline-flex;
+    width: 200px;
+    height: 40px;
+    margin: 3px;
+    margin-top: 20px;
+    padding: 0;
+    border: 1px solid #000000;
+    border-radius: 3px;
+    box-sizing: content-box;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.buttonFB {
+    background-color: #4267B2;
+}
+
+.buttonFB:hover {
+    background-color: #5581da;
+}
+
+.buttonFB:active {
+    background-color: #3367cf;
+}
+
+.buttonGG {
+    background-color: #ffffff;
+}
+
+.buttonGG:hover {
+    background-color: #ecebeb;
+}
+
+.buttonGG:active {
+    background-color: #bdc0c0;
+}
+
+#textFB, #imgFB, #textGG, #imgGG {
+    display: inline-flex;
+    align-items: center;
+}
+
+#textFB {
+    padding: 0px 5px 0px 2px;
+    text-align: left;
+    font-size: 16px;
+    color: #FFF;
+}
+
+#imgFB img {
+    width: 30px;
+    height: 30px;
+    padding: 0px 5px 0px 5px;
+}
+
+#textGG {
+    padding: 0px 10px 0px 0px;
+    text-align: left;
+    font-size: 16px;
+    color: #000000;
+}
+
+#imgGG img {
+    width: 30px;
+    height: 30px;
+    padding: 0px 15px 0px 0px;
+}
+ */

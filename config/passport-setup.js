@@ -29,17 +29,17 @@ passport.use(
             //check if user already exist in  DB
             if (currentUser) {
                 //user exist
-                console.log( 'account ID ' +profile.id + ' already exist')
+                console.log('account ID ' + profile.id + ' already exist')
                 done(null, currentUser)
             }
             else {
                 // if not, create a new user
-                new user({
+                console.log('create user');
+                new User({
                     accountType: 'google',
                     userId: profile.id,
                     name: profile.displayName,
-                    avtURL: profile.photos[0].value,
-                    recentBoard: []
+                    avtURL: profile.photos[0].value
                 }).save().then((newUser) => {
                     console.log('new user created')
                     done(null, newUser)
@@ -67,12 +67,12 @@ passport.use(
             }
             else {
                 // if not, create a new user
-                new user({
+                new User({
                     accountType: 'facebook',
                     userId: profile.id,
                     name: profile.displayName,
                     avtURL: profile.photos[0].value,
-                    recentBoard: []
+                    boards: []
                 }).save().then((newUser) => {
                     console.log('new user created')
                     done(null, newUser)

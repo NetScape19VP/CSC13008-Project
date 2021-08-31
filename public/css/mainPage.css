@@ -1,0 +1,192 @@
+@font-face {
+    font-family: 'KG What A Time';
+    src: url(/font/KGWhatATime.woff);
+}
+
+body {
+    font-family: serif;
+}
+
+.vertical-center {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-fluid {
+    background-image: url(/images/background.png);
+    background-size: cover;
+}
+
+#avatar {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+header {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #FFF;
+    background-color: #26AB7B;
+}
+
+h1 {
+    font-family: 'KG What A Time', serif;
+    color: #26AB7B;
+    text-shadow: 4px 4px 1px #91D7C3;
+}
+
+.form-control {
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+#create .form-control {
+    display: inline-block;
+}
+
+.btn-block {
+    margin: 0 5px;
+}
+
+.btn-join, .btn-create {
+    background-color: #fcf9a0;
+    border: 1px solid rgb(151, 151, 151);
+}
+
+.btn-block-1 {
+    margin: 0 5px;
+}
+
+.btn .text {
+    color: #26AB7B;
+}
+
+.btn-sign-out {
+    color: #FFFFFF;
+}
+
+#joinText, #createText {
+    font-family: 'KG What A Time', serif;
+    color: #FFAE41;
+    text-shadow: 1px 1px 1px #E4581D;
+}
+
+#instruction {
+    width: auto;
+    height: auto;
+    margin: 5px 10px;
+    padding-right: 6px;
+    padding-top: 15px;
+    background-color: #91D7C3;
+    border: 1px solid #26AB7B;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    padding: 5px;
+    margin: 5px 0px;
+    text-align: center;
+}
+
+.table {
+    width: 80%;
+}
+
+td, tr {
+    border-color:black;
+}
+
+footer {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    color: #FFF;
+    background-color: #26AB7B;
+}
+
+@media (min-width: 300px) {
+    h1 {
+        font-size: 60px;
+        text-shadow: 2px 2px 1px #91D7C3;
+        margin-bottom: -10px;
+    }
+    .btn-block, .form-control, .alert-danger {
+        width: 200px;
+        margin: 5px 10px;
+    }
+    .btn-block-1 {
+        width: 70px;
+    }
+    .btn .text, .form-control, .btn .text-1, .alert, .table, #instruction {
+        font-size: 15px;
+    }
+    #joinText, #createText {
+        font-size: 30px;
+    }
+}
+
+@media (min-width:576px) {
+    h1 {
+        font-size: 80px;
+    }
+}
+
+@media (min-width:768px) {
+    h1 {
+        font-size: 90px;
+        text-shadow: 3px 3px 1px #91D7C3;
+        margin-bottom: 5px;
+    }
+    .btn-block, .form-control, .alert-danger {
+        width: 250px;
+    }
+    .btn-block-1 {
+        width: 90px;
+    }
+    .btn .text, .form-control, .btn .text-1, .alert, .table, #instruction {
+        font-size: 20px;
+    }
+    #joinText, #createText {
+        font-size: 35px;
+    }
+}
+
+@media (min-width:992px) {
+    h1 {
+        font-size: 100px;
+    }
+    .btn-block, .form-control, .alert-danger {
+        width: 300px;
+    }
+}
+
+@media (min-width:1200px) {
+    h1 {
+        font-size: 120px;
+        text-shadow: 4px 4px 1px #91D7C3;
+    }
+    .btn-block, .form-control, .alert-danger {
+        width: 350px;
+    }
+    .btn .text, .form-control, .btn .text-1, .alert, .table, #instruction  {
+        font-size: 25px;
+    }
+    #joinText, #createText {
+        font-size: 40px;
+    }
+}
+
+@media (min-width:1400px) {
+    h1 {
+        font-size: 140px;
+    }
+}

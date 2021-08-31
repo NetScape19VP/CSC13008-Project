@@ -13,13 +13,15 @@ const formatMessage = require('../utils/messages');
 const { userJoin, userLeave, getRoomUsers } = require('../utils/user');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 const server = http.createServer(app);
 const io = socketio(server);
 
 const moment = require('moment');
 
 //set up mongodb
-const dbName = 'myFirstDatabase';
+const dbName = 'co-opWhiteboard';
 const mongoose = require('mongoose');
 mongoose.connect(`mongodb+srv://nmphat-mongodb:v!npXf9X277i_XQ@test.vhxrf.mongodb.net/${dbName}?retryWrites=true&w=majority`,
     {
@@ -36,7 +38,9 @@ db.once('open', function () {
 });
 
 
+mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 var dataURL_saving = "";
 
