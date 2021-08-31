@@ -36,13 +36,13 @@
             </div>
 
             <div class="row justify-content-center mt-2">
-                <button class="btn btn-block btn-join" id="btn-join" onclick="handleBtnEvent('btn-join-click')">
+                <button class="btn btn-block btn-join" id="btn-join" onclick="handleBtnEvent('btn-join-click')" hidden>
                     <a href="#"></a>
                     <div class="text">
                         Join a whiteboard
                     </div>
                 </button>
-                <button class="btn btn-block btn-create" id="btn-create" onclick="handleBtnEvent('btn-create-click')">
+                <button class="btn btn-block btn-create" id="btn-create" onclick="handleBtnEvent('btn-create-click')" hidden>
                     <a href="#"></a>
                     <div class="text">
                         Create a whiteboard
@@ -51,43 +51,46 @@
             </div>
 
             <div class="row justify-content-center">
-                <div id="join" class="text-center">
+                <div id="join" class="text-center" hidden>
                     <label id="joinText">Join a whiteboard</label>
                     <input type="text" class="form form-control text-center" id="enterCode"
                         placeholder="Enter whiteboard code" hidden='true'>
                 </div>
 
-                <div id="create" class="text-center justify-content-center">
+                <div id="create" class="text-center justify-content-center" hidden>
                     <label id="createText">Create a whiteboard</label>
                     <div class="justify-content-center text-start" id="instruction">
                         <ul>
                             <li>
-                                Whiteboard name cannot start or end with spaces
+                                Whiteboard name cannot contain spaces.
                             </li>
                             <li>
-                                Whiteboard name must contain only letters, numbers, spaces
+                                Whiteboard name must contain only letters, numbers, spaces.
+                            </li>
+                            <li>
+                                Whiteboard name must be between 2-20 characters long.
                             </li>
                         </ul>
                     </div>
                     <input type="text" class="form form-control text-center" id="enterName"
-                        placeholder="Enter whiteboard name" hidden='true' maxlength="10" autocomplete="none">
+                        placeholder="Enter whiteboard name" hidden='true' minlength="2" maxlength="20" autocomplete="off">
                 </div>
             </div>
 
-            <div id="message"></div>
+            <div id="message" hidden></div>
 
             <div class="row justify-content-center mt-2">
-                <button class="btn btn-block-1 btn-secondary" id="back" onclick="handleBtnEvent('init')">
+                <button class="btn btn-block-1 btn-secondary" id="back" onclick="handleBtnEvent('init')" hidden>
                     <a href="#"></a>
                     <div class="text-1">Back</div>
                 </button>
-                <button class="btn btn-block-1 btn-primary" id="submit">
+                <button class="btn btn-block-1 btn-primary" id="submit" hidden>
                     <a href="#"></a>
                     <div class="text-1" id="submitText"></div>
                 </button>
             </div>
 
-            <table class="table mt-2" id="recentBoard">
+            <table class="table mt-2" id="recentBoard" hidden>
                 <thead>
                     <tr>
                         <th class="text-center" colspan="4">

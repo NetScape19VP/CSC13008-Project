@@ -11,16 +11,22 @@ router.get('/google', passport.authenticate('google', {
 
 // callback route for google to redirect to
 // hand control to passport to use code to grab profile info
-router.get('/google/callback', passport.authenticate('google', {failureRedirect: '/'}), (req, res) => {
-    res.redirect(`/board`)
-});
+router.get('/google/callback', passport.authenticate(
+    'google',
+    {
+        failureRedirect: '/'
+    }),
+    (req, res) => {
+        res.redirect(`/board`)
+    }
+);
 
 //FACEBOOK AUTHENTICATE
 router.get('/facebook', passport.authenticate('facebook'));
 
 // callback route for google to redirect to
 // hand control to passport to use code to grab profile info
-router.get('/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/'}), (req, res) => {
+router.get('/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }), (req, res) => {
     res.redirect(`/board`)
 });
 

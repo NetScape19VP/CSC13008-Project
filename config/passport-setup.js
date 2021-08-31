@@ -22,9 +22,9 @@ passport.use(
         clientSecret: keys.google.clientSecret,
         callbackURL: `/auth/google/callback`
 
-    }, (accessToken, refreshToken, profile, done) => {
+    }, async (accessToken, refreshToken, profile, done) => {
         //passport callback func
-        User.findOne({ userId: profile.id, accountType: 'google' }).then((currentUser) => {
+        await User.findOne({ userId: profile.id, accountType: 'google' }).then((currentUser) => {
 
             //check if user already exist in  DB
             if (currentUser) {

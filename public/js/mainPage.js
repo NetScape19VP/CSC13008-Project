@@ -10,7 +10,7 @@ window.onload = function () {
     }
     else {
         inputWhiteBoardNameDOM.addEventListener('keypress', (event) => {
-            var regex = /^[\w\s\d]$/;
+            var regex = /^[\w\d]$/;
             var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 
             //* invalid input case 
@@ -129,7 +129,7 @@ async function checkValidData() {
     }
     //btn create
     else {
-        let regexForValidWBName = /^[\w\d]+[\w\d\s]*[\w\d]$/
+        let regexForValidWBName = /^[\w\d]{2,20}$/
         var inputWBName = document.getElementById("enterName").value;
         if (inputWBName.length === 0) {
             document.getElementById("message").innerHTML = `<div class="alert alert-danger" role="alert">

@@ -1,19 +1,20 @@
-const User = require('../models/users')
-const Whiteboard = require('../models/whiteboards')
+const User = require('../models/users');
+const Whiteboard = require('../models/whiteboards');
+const mongoose = require('mongoose');
 
 //get /board
-const  mainPageController = async (req, res) => {
-    
+const mainPageController = async (req, res) => {
+
 
     async function getRecentBoards(listBoardCode) {
         let recentBoards = [];
         for (const boardCode of listBoardCode) {
             let result = await Whiteboard.findById(boardCode)
-    
+
             if (result) {
-                console.log('board found: ',result);
+                console.log('board found: ', result);
                 recentBoards.push(result);
-            }           
+            }
         };
         console.log('recentBoard get: ', recentBoards);
         return recentBoards;
@@ -28,68 +29,101 @@ const  mainPageController = async (req, res) => {
 }
 
 //get board/:boardID
-const whiteboardController = (req, res) => {
-    //if user have never join this room before, add it to user's boards list
-    User.findOneAndUpdate(
-        {
-            _id: req.user._id
-        },
-        {
-            $addToSet: {
-                boards: req.params.whiteboardCode
-            }
-        }, err => {
-            if (err) {
-                console.log('update that bai', err);
-            }
-            else {
-                console.log('update thanh cong')
-            }
-        })
+const whiteboardController = async (req, res) => {
+    //check is valid route
+    Whiteboard.findOne({ _id: req.params.whiteboardCode }).then((board) => {
+        if (!board) {
+            console.log('invalid route');
+            res.redirect('/error')
+        }
+        else {
+            //if user have never join this room before, add it to user's boards list
+            User.findOneAndUpdate(
+                {
+                    _id: req.user._id
+                },
+                {
+                    $addToSet: {
+                        boards: req.params.whiteboardCode
+                    }
+                }, err => {
+                    if (err) {
+                        console.log('update failed', err.message);
+                    }
+                    else {
+                        console.log('update list success')
+                    }
+                })
 
-    res.render('whiteboard', {
-        user: req.user,
-        room: req.params.roomID
+            res.render('whiteboard', {
+                user: req.user,
+                whiteboardCode: req.params.whiteboardCode
+            })
+        }
     })
-
-
 }
 
 function isValidWhiteboardName(whiteBoardName) {
-    let regexForValidWBName = /^[\w\d]+[\w\d\s]*[\w\d]$/
+    let regexForValidWBName = /^[\w\d]{2,20}$/
     return regexForValidWBName.test(whiteBoardName);
 }
 
-const createWhiteboard = (req, res, next) => {
+const createWhiteboard = async (req, res, next) => {
     console.log(req.body);
     if (!isValidWhiteboardName(req.body.roomName)) {
         res.json(JSON.stringify({
             status: 'failed',
         }))
     }
-    //console.log(req.body);
-    new Whiteboard({
-        name: req.body.whiteboardName
-    }).save().then((newWhiteboard) => {
-        console.log('Create room with name: ' + newWhiteboard.name);
-        //res.send('Create room with name: ' + newRoom.name);
-        res.json(JSON.stringify({
-            status: 'success',
-            whiteboardCode: newWhiteboard._id
-        }))
-    });
 
+    async function checkIsExistWhiteboard(whiteboardName) {
+        const whiteboard = await Whiteboard.findOne({ name: whiteboardName}).exec();
+        if (whiteboard) {
+            console.log('Found room with ID: ' + whiteboardName);
+            return true;
+        }
+        console.log('Cannot find room with ID: ' + isValidWhiteboardName);
+        return false;
+    }
+
+    const check = await checkIsExistWhiteboard(req.body.whiteboardName);
+    //room found => cannot create a new room
+    if (check) {
+        res.json(JSON.stringify({
+            status: 'failed'
+        }))
+    }
+    //room not found
+    else {
+        new Whiteboard({
+            name: req.body.whiteboardName
+        }).save().then((newWhiteboard) => {
+            console.log('Create room with name: ' + newWhiteboard.name);
+            //res.send('Create room with name: ' + newRoom.name);
+            res.json(JSON.stringify({
+                status: 'success',
+                whiteboardCode: newWhiteboard._id
+            }))
+        });
+    }
 }
 
 /**
  * @returns boolean
  */
-const isExistWhiteboard = async (req, res) => {
+const isExistWhiteboard = async (req, res, next) => {
     /**
      * inner func
      */
     async function checkIsExistWhiteboard(whiteboardCode) {
-        const whiteboard = await Whiteboard.findOne({ _id: whiteboardCode }).exec();
+        try {
+            var id = mongoose.Types.ObjectId(whiteboardCode);
+        }
+        catch (err) {
+            console.log('loi', err);
+            next();
+        }
+        const whiteboard = await Whiteboard.findOne({ _id: id}).exec();
         if (whiteboard) {
             console.log('Found room with ID: ' + whiteboardCode);
             return true;

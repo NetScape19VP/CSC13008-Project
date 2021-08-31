@@ -1,0 +1,684 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+/*
+body {
+    cursor: url(../images/button/bxs-eraser.svg) , auto;
+}*/
+
+.cursor {
+    width: 25px;
+    height: 25px;
+    /*border: black 1px solid;*/
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0 0 5px 0 gray;
+    z-index: -1;
+    background-color: black;
+
+}
+
+/*sidebar*/
+.wrapper {
+   /* background:black;*/
+    width: 70px;
+    margin: 10px;
+    padding: 8px 0px;
+    border-radius: 10px;
+    cursor: default;
+    /*transform: scale(0.5);*/
+    position: fixed;
+    z-index: 3;
+}
+
+.wrapper .button, .shape {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 50px;
+    overflow: hidden;
+    /*justify-content: center;*/
+    align-items: center;
+    cursor: pointer;
+    transition: width 0.3s ease-out;
+    box-shadow: 3px 5px 10px 0px darkslategrey;
+}
+
+.wrapper .button:hover {
+    width: 150px;
+}
+
+.wrapper .button .span {
+    text-align: center;
+}
+
+.icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    border-radius: 50px;
+    transition: all 0.3s ease-out;
+}
+
+.icon img {
+    width: 30px;
+    height: 30px;
+    transition: all 0.3s ease-out;
+}
+
+.wrapper .button span {
+    font-size: 18px;
+    line-height:50px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    transition: width 0.3s ease-out;
+    text-align: center;
+}
+
+/*shape*/
+.sub-tools {
+    display: flex;
+    flex-wrap: wrap;
+   /*background: cyan;*/
+    border-radius: 10px;
+    position: absolute;
+    top: -250px;
+    left: -100%;
+    width: 240px;
+    transition: all 0.5s ease;
+    transform-style: flat;
+    opacity: 0;
+}
+
+.shape {
+    opacity: 0.7;
+    transition: all 0.5s ease;
+    /*box-shadow: 3px 5px 10px 0px darkslategrey;*/
+}
+
+.shape:hover {
+    width: 70px;
+    height: 70px;
+    opacity: 1;
+}
+
+.shape:hover .icon {
+    width: 70px;
+    height: 70px;
+    padding: 15px;
+}
+
+.shape:hover img {
+    width: 40px;
+    height: 40px;
+}
+
+
+/* span inline-block vertical align*/
+div > * {
+    vertical-align: middle;
+}
+/*color picker*/
+.colorBoard {
+    position: absolute;
+    top: -200px;
+    left: 85px;
+    width: 220px;
+    height: 200px;
+    border-radius: 10px;
+    /*display: flex;
+    justify-content: center;
+    align-items: center;*/
+    transition: all 0.4s ease;
+    cursor: default;
+    opacity: 0;
+    background:lightskyblue;
+    box-shadow: dimgray 3px 5px 10px 0px ;
+}
+
+.color-picker {
+    position:relative;
+    cursor: pointer;
+}
+
+.color-indicator {
+    display: inline-block;
+    width: 80px;
+    height: 120px;
+    background-color:white;
+    border-radius: 10px;;
+    vertical-align: middle;
+    margin: 10px;
+    border: solid 1px;
+    cursor: default;
+}
+
+#picker {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    cursor: pointer;
+}
+
+/*line width*/
+.line-width {
+    position: absolute;
+    height: 80px;
+    width: 265px;
+    top: 130px;
+    left: -300px;
+    border-radius: 10px;
+    padding: 0 40px 0 30px;
+    cursor: default;
+    transition: all 0.3s ease;
+    opacity: 0;
+    background:honeydew;
+    box-shadow: dimgray 3px 5px 10px 0px ;
+    z-index: 1;
+}
+
+
+.line-width .field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+}
+
+.line-width .value {
+    display: flex;
+    position: relative;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    place-items: center;
+}
+
+.line-width .value span {
+    position: absolute;
+    height: 45px;
+    width: 45px;
+    color: white;
+    font-weight: 500;
+    top: -50px;
+    transform: scale(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease-in-out;
+    line-height: 55px;
+    z-index: 2;
+    text-align: center;
+}
+
+.line-width .value span.show {
+    transform: translateX(-8%) scale(1);
+}
+
+.line-width .value span:after {
+    position: absolute;
+    content: "";
+    height: 45px;
+    width: 45px;
+    background:darkturquoise;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border: 3px solid white;
+    z-index: -1;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.line-width .field .v-left {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 600;
+    color:black;
+
+    left: -10px;
+}
+
+.line-width .field .v-right {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 600;
+    color:black;
+
+    right: -20px;
+}
+
+.line-width .field input {
+    /*-webkit-appearance: none;*/
+    height: 5px;
+    width: 90%;
+    /*background: gold;*/
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+/*
+.line-width .field input::-moz-range-progress {
+    background:red;
+}
+
+.line-width .field input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: gold;
+    border-radius: 50%;
+    border: 1px solid yellow;
+}*/
+
+.name {
+    font-size: 25px;
+    font-weight: bold;
+    font-style: italic;
+    height: 35px;
+    margin: 10px auto 0px 5px;
+}
+.colorBoard hr {
+    margin-bottom: 3px;
+}
+
+.close {
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    position: absolute;
+    border-radius: 50%;
+    background:tomato;
+}
+
+.cc {
+    top: 5%;
+    left: 85%;
+}
+
+.cf {
+    top: 25%;
+    left: 80%;
+}
+
+.bx.bx-x {
+    position: relative;
+    color: white;
+    top: -5px;
+    left: -3px;
+}
+
+/*font style*/
+.text {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    position: absolute;
+    top: 340px;
+    left: -200px;
+    opacity: 0;
+    height: 50px;
+    width: 170px;
+    background: burlywood;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    padding: 10px;
+}
+
+/*eraser clear*/
+.clearAll {
+    position: absolute;
+    top: -200px;
+    left: 85px;
+    width: 110px;
+    text-align: center;
+    border-radius: 10px;
+    background: white;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.clearAll button {
+    color: white;
+    background:tomato;
+    font-size: 22px;
+    font-weight: bold;
+    width: 110px;
+    height: 40px;
+    border-radius: 10px;
+    border: solid 1px;
+    box-shadow: inset 0 0 0 0 yellow;
+    transition: ease-out 0.3s;
+}
+
+.clearAll button:hover {
+    box-shadow: inset 110px 0 0 0 yellow;
+    color: red;
+}
+
+.clearAll button:active {
+    width: 70px;
+    height: 24px;
+    font-size: 14px;
+}
+
+/*board info*/
+.info {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 20px;
+    right: -330px;
+    height: 100px;
+    width: 400px;
+    background:aquamarine;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
+    box-shadow: 5px 5px 10px 0px gray;
+    padding: 10px;
+    cursor: default;
+    transition: all 0.3s ease;
+}
+
+.info:hover {
+    right: 0%;
+}
+
+.owner {
+    height: 70px;
+    display: flex;
+}
+
+.owner .userImage {
+    display: flex;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: white;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+}
+
+.owner .userImage img {
+    width: 50px;
+    height: 50px;
+}
+
+.info .boardInfor {
+    width: 100%;
+    margin-left: 10px;
+    display: flex;
+    flex-flow: column;
+    justify-content: left;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.tac {
+    display: flex;
+    flex-flow:wrap;
+    text-align: center;
+    width: 100%;
+    text-align: left;
+    margin: 5px auto 5px 10px;
+    height: 25px;
+}
+
+.tac span {
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.tac a {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    font-weight: normal;
+    font-size: 18px;
+} 
+
+.tac button {
+    position: absolute;
+    right: 20px;
+    bottom: 40px;
+    padding: 0px;
+    border-radius: 10px;
+    height: 36px;
+    width: 36px;
+    cursor: pointer;
+}
+
+.tac button i {
+    font-size: 22px;
+}
+
+/*chat box*/
+.chat {
+    width: 400px;
+    height: 450px;
+    position: fixed;
+    right: -500px;
+    bottom: 100px;
+    background:cadetblue;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    padding: 0px 10px;
+    transition: all 0.4s;
+    cursor: default;
+}
+
+.chat .navb {
+    display: flex;
+    align-items: center;
+    height: 30px;
+   /* position: absolute;
+    top: 15px;
+    left: 10px;*/
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 0px;
+    padding: 10px;
+}
+
+.chat .chatbox {
+    background: white;
+    height: 350px;
+    padding: 10px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.chat .chatbox::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chat .chatbox::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: gainsboro;
+}
+
+.chatbox .recived, .chatbox .send {
+    display: flex;
+    width: 300px;
+    height: auto;
+    margin: 10px 0px;
+}
+
+.chatbox .recived .from {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.chatbox .recived .from img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.chatbox .send .from {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.chatbox .send .from img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.mess {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    height: auto;
+    font-size: 24px;
+}
+
+.R {
+    margin-left: 10px;
+    background: darkgrey;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+}
+
+.chat .send {
+    justify-content: flex-end;
+    margin-left: 70px;
+}
+
+.S {
+    background:cyan;
+    border-radius: 10px;
+    border-bottom-right-radius: 0px;
+}
+
+.chatsend {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 10px;
+    padding-left: 0px;
+}
+
+.sendbox {
+    height: 25px;
+    width: 320px;
+    overflow-wrap:normal;
+    font-size: 24px;
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    background:lightgrey;
+    transition: all 0.3s;
+}
+
+.sendbox:focus {
+    background: white;
+}
+
+.send-btn {
+    margin-left: 10px;
+    padding: 5px;
+    background:steelblue;
+    border-radius: 50%;
+    transition: all 0.4s;
+}
+
+.send-btn button {
+    background: none;
+    border: none;
+}
+
+.chatsend i {
+    font-size: 30px;
+    color:cornsilk;
+    transition: all 0.4s;
+}
+
+.send-btn:hover {
+    background: teal;
+}
+
+.send-btn:active i {
+    font-size: 26px;
+    color: mediumblue;
+}
+
+/*chat button*/
+.chat-btn {
+    display: flex;
+    position: fixed;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    right: 30px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 5px;
+    background: mediumaquamarine;
+    box-shadow: 0px 0px 10px 0px gray;
+    
+}
+
+.chat-btn button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 60px;
+    padding: 10px;
+    background: cornflowerblue;
+    border-radius: 50%;
+    border: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.chat-btn i {
+    font-size: 46px;
+    color: white;
+    transition: all 0.3s;
+}
+
+.chat-btn:hover i {
+    transform: rotate(30deg);
+    font-size: 50px;
+}
+
+.chat-btn button:active {
+    height: 50px;
+    width: 50px;
+}
+
+.chat-btn button:active i {
+    font-size: 40px;
+}
