@@ -12,11 +12,9 @@ const mainPageController = async (req, res) => {
             let result = await Whiteboard.findById(boardCode)
 
             if (result) {
-                console.log('board found: ', result);
                 recentBoards.push(result);
             }
         };
-        console.log('recentBoard get: ', recentBoards);
         return recentBoards;
     }
     let recentBoards = await getRecentBoards(req.user.boards);
