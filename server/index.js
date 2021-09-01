@@ -11,8 +11,14 @@ const express = require('express');
 const socketio = require('socket.io');
 const formatMessage = require('../utils/messages');
 const { userJoin, userLeave, getRoomUsers } = require('../utils/user');
+const cors = require('cors');
+var corsOptions = {
+    origin: 'https://co-op-whiteboard.herokuapp.com/',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 const app = express();
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const server = http.createServer(app);
