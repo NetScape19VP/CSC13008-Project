@@ -80,6 +80,12 @@ io.on("connection", async (socket) => {
     socket.on("disconnect", function () {
         console.log('roomID ' + socket.id + " vua ngat ket noi");
     });
+
+    socket.on('check', data => console.log(data));
+    socket.on('client-draw-line', data => {
+        socket.broadcast.to(socket.userInfo.room).emit('server-send-line',data)
+    });
+
     socket.on("Client-send-dataURL", function (dataURL) {
         dataURL_saving = dataURL;
     });

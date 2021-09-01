@@ -2,6 +2,8 @@ class Paint {
     constructor(width, height) {
         //create main canvas
         this.canvas = this.createCanvas(width, height);
+        this.context = this.canvas.getContext("2d");
+        this.context.lineCap = 'round';
 
         //create temp canvas
         this.tempCanvas = this.createCanvas(width, height, "tempCanvas");
@@ -118,6 +120,8 @@ class Paint {
         this.handleMousemove = this.mousemove.bind(this);
 
         this.listenEvents();
+
+        socket.emit('check', 'paint has been created')
     }
 
     /**
@@ -437,127 +441,6 @@ class Paint {
             });
         })
 
-
-        //* ----------------------------------resize insert image----------------------------------
-
-        // function doResize(object, e) {
-        //     let startSize = object.size;
-        //     object.DOM.querySelector('.crop').style.width = (startSize.width + e.clientX - startX) + 'px';
-        //     object.DOM.querySelector('.crop').style.height = (startSize.height + e.clientY - startY) + 'px';
-        // }
-        // //
-        // this.insertImgContainer.DOM.querySelector('#top-line').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-        //         console.log('mousedown on n-resize');
-        //     }
-        // )
-        // this.insertImgContainer.DOM.querySelector('#bottom-line').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-        //         console.log('mousedown on s-resize');
-        //     }
-        // )
-        // this.insertImgContainer.DOM.querySelector('#left-line').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-        //         console.log('mousedown on w-resize');
-        //     }
-        // )
-        // this.insertImgContainer.DOM.querySelector('#right-line').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-        //         console.log('mousedown on e-resize');
-        //     }
-        // )
-
-
-        // //corner
-        // this.insertImgContainer.DOM.querySelector('#top-left-corner').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-
-        //         this.insertImgContainer.isResized = 'top-left-corner';//bottom-right-corner
-        //         this.insertImgContainer.size.width = parseInt(this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().width);
-        //         this.insertImgContainer.size.height = parseInt(this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().height);
-        //         //console.log(this.insertImgContainer.size);
-        //         this.startPos = this.getMousePos(event)
-        //         console.log(this.startPos);
-
-        //         console.log('mousedown on #top-left-corner');
-        //     }
-        // )
-
-        // this.insertImgContainer.DOM.querySelector('#bottom-left-corner').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-        //         console.log('mousedown on s-resize');
-        //     }
-        // )
-        // this.insertImgContainer.DOM.querySelector('#top-right-corner').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-        //         console.log('mousedown on w-resize');
-        //     }
-        // )
-        // this.insertImgContainer.DOM.querySelector('#bottom-right-corner').addEventListener(
-        //     'mousedown',
-        //     (event) => {
-        //         this.insertImgContainer.isResized = 'bottom-right-corner';//bottom-right-corner
-        //         this.insertImgContainer.size.width = parseInt(this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().width);
-        //         this.insertImgContainer.size.height = parseInt(this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().height);
-        //         //console.log(this.insertImgContainer.size);
-        //         this.startPos = this.getMousePos(event)
-        //         console.log(this.startPos);
-
-        //         console.log('mousedown on e-resize');
-        //     }
-        // )
-        // document.addEventListener(
-        //     'mousemove',
-        //     (event) => {
-        //         switch(this.insertImgContainer.isResized) {
-        //             case false:
-        //                 break;
-        //             case 'top-left-corner':
-        //                 console.log('tlc mousemove');
-
-        //                 this.endPos = this.getMousePos(event);
-        //                 this.insertImgContainer.DOM.querySelector('.crop').style.width = this.insertImgContainer.size.width - this.endPos.x + this.startPos.x + 'px';
-        //                 this.insertImgContainer.DOM.querySelector('.crop').style.height = this.insertImgContainer.size.height - this.endPos.y + this.startPos.y + 'px';
-
-        //                 this.drawInsertImage();
-        //                 this.curPos = this.getMousePos(event)
-        //                 this.setInsertImgPosition(this.curPos)
-        //                 this.drawInsertImage();
-        //                 break;
-        //             case 'bottom-right-corner': 
-        //                 console.log('brc mousemove');
-
-
-        //                 this.endPos = this.getMousePos(event);
-        //                 this.insertImgContainer.DOM.querySelector('.crop').style.width = this.insertImgContainer.size.width + this.endPos.x - this.startPos.x + 'px';
-        //                 this.insertImgContainer.DOM.querySelector('.crop').style.height = this.insertImgContainer.size.height + this.endPos.y - this.startPos.y + 'px';
-
-        //                 this.drawInsertImage();
-        //                 break;
-
-
-
-        //         }
-
-        //     }
-        // )
-        // document.addEventListener(
-        //     'mouseup',
-        //     (event) => {
-        //         console.log('mouseup');
-        //         this.insertImgContainer.isResized = false;
-        //     }
-        // )
-
-
-
     }
 
     //mouse moving methods
@@ -718,11 +601,12 @@ class Paint {
     clear() {
         let context = this.canvas.getContext("2d");
         context.clearRect(
-            this.curPos.x - this.lineWidth * 10,
-            this.curPos.y - this.lineWidth * 10,
-            this.lineWidth * 20,
-            this.lineWidth * 20
+            this.curPos.x - this.lineWidth * 1,
+            this.curPos.y - this.lineWidth * 1,
+            this.lineWidth * 2,
+            this.lineWidth * 2
         );
+        socket.emit()
     }
 
 
@@ -745,14 +629,42 @@ class Paint {
     }
 
     //draw a line to temp canvas
-    drawLine() {
-        this.tempContext.beginPath();
-        this.tempContext.moveTo(this.endPos.x, this.endPos.y);
-        this.tempContext.lineTo(this.startPos.x, this.startPos.y);
-        this.tempContext.strokeStyle = this.color;
-        this.tempContext.lineWidth = this.lineWidth;
-        this.tempContext.stroke();
-        this.tempContext.closePath();
+    drawLine(data) {
+        if (!data) {
+            this.tempContext.beginPath();
+            this.tempContext.moveTo(this.endPos.x, this.endPos.y);
+            this.tempContext.lineTo(this.startPos.x, this.startPos.y);
+            this.tempContext.strokeStyle = this.color;
+            this.tempContext.lineWidth = this.lineWidth;
+            this.tempContext.stroke();
+            this.tempContext.closePath();
+
+            if (this.tool !== 'line') {
+                socket.emit(
+                    'client-draw-line',
+                    {
+                        endPos: { 
+                            x: this.endPos.x,
+                            y: this.endPos.y
+                        },
+                        startPos: { 
+                            x: this.startPos.x,
+                            y: this.startPos.y
+                        },
+                        color: this.color,
+                        lineWidth: this.lineWidth
+                    })
+            }
+        }
+        else {
+            this.context.beginPath();
+            this.context.moveTo(data.endPos.x, data.endPos.y);
+            this.context.lineTo(data.startPos.x, data.startPos.y);
+            this.context.strokeStyle = data.color;
+            this.context.lineWidth = data.lineWidth;
+            this.context.stroke();
+            this.context.closePath();
+        }
     }
 
     //draw a dot to temp canvas

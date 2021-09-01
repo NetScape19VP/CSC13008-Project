@@ -1,20 +1,13 @@
-//* Get a regular interval for drawing to the screen
-window.requestAnimFrame = (function (callback) {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function (callback) {
-            window.setTimeout(callback, 1000 / 60); //* 60fps
-        };
-})();
+
 
 //! socket.io listen at https://co-op-whiteboard.herokuapp.com
 
 
 $(document).ready(() => {
-    socket.on("Server-send-dataURL", (dataURL) => {
+    socket.on('server-send-line',data => {
+        paint.drawLine(data);
+    });
+    socket.on("Server-send-user", (dataURL) => {
         deserialize(dataURL, canvas);
     });
 
@@ -31,15 +24,6 @@ $(document).ready(() => {
     })
 });
 
-function sendDataURL() {
-    let dataURL_ = canvas.toDataURL();
-    socket.emit("Client-send-dataURL", dataURL_);
-}
-
-function sendContext(line) {
-    socket.emit("Client-send-context", line);
-}
-
 // deserialize dataURL to image and apply to canvas
 function deserialize(data, canvas) {
     var img = new Image();
@@ -50,53 +34,4 @@ function deserialize(data, canvas) {
     };
 
     img.src = data;
-}
-
-//apply (draw) canvas context to canvas
-function applyContext(data) {
-    let pX, pY, cX, cY;
-    pX = data.prevX;
-    pY = data.prevY;
-    cX = data.currX;
-    cY = data.currY;
-
-    ctx.beginPath();
-    ctx.moveTo(pX, pY);
-    ctx.lineTo(cX, cY);
-    ctx.strokeStyle = data.strokeStyle;
-    ctx.lineWidth = data.lineWidth;
-    ctx.stroke();
-    ctx.closePath();
-
-    //// console.log("apply ctx successfully");
-}
-
-
-//apply (draw) a dot to canvas
-function applyDot(data){
-    console.log(data);
-    let r = data.radius, 
-    cX = data.currX;
-    cY = data.currY,
-    color_fill = data.fillStyle;
-    ctx_temp = canvas.getContext('2d');
-
-    console.log("dot drew");
-    console.log(r);
-    ctx_temp.beginPath();
-    ctx_temp.fillStyle = color_fill;
-    ctx_temp.arc(cX, cY, r, 0, Math.PI * 2);   
-    ctx_temp.fill();
-    ctx_temp.closePath();
-}
-
-// send a context properties to server
-function sendContextJson(json) {
-    socket.emit("Client-send-context-as-json", json);
-    // ? console.log("client send ctx json");
-}
-
-//send a dot properties to server
-function sendDotJason(json) {
-    socket.emit("Client-send-dot-as-json", json)
 }
