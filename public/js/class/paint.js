@@ -17,6 +17,8 @@ class Paint {
         this.prevTool = "";
         this.color = "black";
         this.lineWidth = 20;
+        this.fontFamily = 'Arial';
+        this.fontSize = 40;
 
         this.boxInputContainer = this.createInputTextContainer();
         this.insertImgContainer = this.createInsertImgContainer();
@@ -418,6 +420,7 @@ class Paint {
                 0);
             this.insertImgContainer.hide_showContainer('hide');
             this.isInsertImg = false;
+            this.tool = this.prevTool;
         });
         this.insertImgContainer.DOM.querySelector('#btn-cancel-insert-img').addEventListener('click', (event) => {
             this.clearCanvas(this.tempContext, 0, 0, this.tempCanvas.width, this.tempCanvas.height);
@@ -781,13 +784,13 @@ class Paint {
         this.tempContext.stroke();
     }
 
-    drawText(fontFamily = "Arial", fontSize = 40) {
+    drawText() {
         let textToDraw = this.boxInputContainer.querySelector('#input-text').value;
 
         // //check
         // console.log("draw text called", textToDraw);
 
-        this.tempContext.font = `${fontSize}px ${fontFamily}`;
+        this.tempContext.font = `${this.fontSize}px ${this.fontFamily}`;
         this.tempContext.fillStyle = this.color;
         this.tempContext.strokeStyle = this.color;
         this.tempContext.fillText(

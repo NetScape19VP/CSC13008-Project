@@ -129,7 +129,7 @@ textbtn.addEventListener('click', () => {
         paint.setTool('text');
 })
 closetext.addEventListener('click', () =>{
-        txt.style.left = -200 + "px";
+        txt.style.left = -300 + "px";
         txt.style.opacity = 0;
 })
 
@@ -152,7 +152,7 @@ clear.addEventListener('click',() => {
     }   
 })
 clearAll.addEventListener('click', () => {
-    paint.clearCanvas(paint.tempContext, 0, 0, paint.tempCanvas.width, this.tempCanvas.height);
+    paint.clearCanvas(paint.canvas.getContext("2d"), 0, 0, paint.canvas.width, this.canvas.height);
     clearAll.style.left = -50 + "%";
     clearAll.style.opacity = 0;
     eraser=false;
@@ -177,9 +177,34 @@ chatbtn.addEventListener('click', () => {
     }
 })
 
+
+//shape onclick
+
+document.querySelector('#circle').onclick = function (e) {
+    paint.setTool('circle');
+}
+
+document.querySelector('#rectangle').onclick = function (e) {
+    paint.setTool('rectangle');
+}
+
+document.querySelector('#line').onclick = function (e) {
+    paint.setTool('line');
+}
+
+
+//copy text btn when onclick
+document.querySelector('#btn-copy').onclick = function (e) {
+    console.log('copy', document.querySelector('#wb-code-info').innerText, ' tp clipboard');
+    navigator.clipboard.writeText(document.querySelector('#wb-code-info').innerText);
+}
+
 //change bachground button
 var pencil=document.getElementById("pencil");
 var movehand=document.getElementById("move");
+movehand.onclick = function (e) {
+    paint.setTool('hand');
+}
 
 var arrButton=[pencil, clear, ShapeTools, textbtn, movehand];
 arrButton.forEach(element => {
@@ -191,10 +216,38 @@ arrButton.forEach(element => {
     })
 })
 
+async function loadFile(event) {
+    var image = document.getElementById('insert-img');
+
+    image.src = await URL.createObjectURL(event.target.files[0]);
+
+    paint.setTool('insertImg');
+};
+
 //clear subtools
+var formInputFont = document.querySelector('#input-font').onchange = function () {
+    var selectedIndex = document.querySelector('#input-font').querySelector('#font-txt').selectedIndex;
+    var fontFamily = document.querySelector('#input-font').querySelector('#font-txt').options[selectedIndex].value
+    //console.log(fontFamily);
+    var fontSize = document.querySelector('#input-font').querySelector('#input-font-size');
+    paint.fontSize = fontSize;
+    paint.fontFamily = fontFamily;
+    
+}
+
 var AddImg=document.getElementById("addImg");
+AddImg.onclick = function (e) {
+    paint.setTool('insertImg');
+    AddImg.querySelector('#input-img').click();
+}
 var grid=document.getElementById("grid");
+grid.onclick = function (e) {
+    paint.showHideGrid();
+}
 var Download=document.getElementById("download");
+Download.onclick = function (e) {
+    paint.download();
+}
 //all button from wrapper here
 var arr1 = [pencil, clear, lineWidth, cPicker, ShapeTools, textbtn, AddImg, movehand, grid, Download];
 

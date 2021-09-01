@@ -20,7 +20,7 @@ passport.use(
         //option for gg strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: `/auth/google/callback`
+        callbackURL: `http://localhost:3000/auth/google/callback`
 
     }, async (accessToken, refreshToken, profile, done) => {
         //passport callback func

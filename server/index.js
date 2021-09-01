@@ -108,14 +108,18 @@ io.on("connection", async (socket) => {
         socket.join(socket.userInfo.room);
 
         // welcome message
-        socket.emit('Server-notify', {bot: 'bot', 
-                                      notification: 'Welcome to breakout room', 
-                                      time: moment().format('h:mm a')});
+        socket.broadcast.to(socket.userInfo.room).emit('Server-notify', {
+            bot: 'bot',
+            notification: 'Welcome to breakout room',
+            time: moment().format('h:mm a')
+        });
 
         // broadcast when a member join -- except the member was connected
-        socket.broadcast.to(socket.userInfo.room).emit('Server-notify', {bot: 'bot', 
-                                                                         notification: `${socket.userInfo.user.name} has joined this room`, 
-                                                                         time: moment().format('h:mm a')});
+        socket.broadcast.to(socket.userInfo.room).emit('Server-notify', {
+            bot: 'bot',
+            notification: `${socket.userInfo.user.name} has joined this room`,
+            time: moment().format('h:mm a')
+        });
 
         // send user and room infos
         io.to(socket.userInfo.room).emit("roomUsers", {
@@ -129,7 +133,11 @@ io.on("connection", async (socket) => {
         const user = userLeave(socket.id);
 
         if (user) {
-            io.to(user.room).emit('message', formatMessage('bot', `${user.username} has left breakout room`));
+            socket.broadcast.to(socket.userInfo.room).emit('Server-notify', {
+                bot: 'bot',
+                notification: `${socket.userInfo.user.username} has left breakout room`,
+                time: moment().format('h:mm a')
+            });
         }
 
     });
@@ -138,6 +146,7 @@ io.on("connection", async (socket) => {
 
     //listen for chatMessage
     socket.on('chatMessage', msg => {
+        console.log(socket.userInfo);
         io.to(socket.userInfo.room).emit('message', formatMessage(socket.userInfo.user, msg));
     });
 });

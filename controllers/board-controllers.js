@@ -57,7 +57,8 @@ const whiteboardController = async (req, res) => {
 
             res.render('whiteboard', {
                 user: req.user,
-                whiteboardCode: req.params.whiteboardCode
+                whiteboardCode: req.params.whiteboardCode,
+                whiteboardName: board.name
             })
         }
     })

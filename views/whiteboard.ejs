@@ -77,16 +77,16 @@
             <span>Shape</span>
         </div>
         <div class="sub-tools" id="shape-tool">
-            <div class="shape">
+            <div class="shape" id='circle'>
                 <div class="icon"><img src="/images/tool/circle.svg" alt=""></div>
             </div>
-            <div class="shape">
+            <div class="shape" id='rectangle'=>
                 <div class="icon"><img src="/images/tool/rectangle.svg" alt=""></div>
             </div>
             <!-- <div class="shape">
                 <div class="icon"><img src="/images/tool/triangle.svg" alt=""></div>
             </div> -->
-            <div class="shape">
+            <div class="shape" id='line'>
                 <div class="icon"><img src="/images/tool/diagonal-line.svg" alt=""></div>
             </div>
         </div>
@@ -98,7 +98,7 @@
             <span>Text</span>
         </div>
         <div class="text" id="txt">
-            <form action="">
+            <form action="" id="input-font">
                 <label for="">
                     <strong>Font: </strong> <select name="text-font" id="font-txt">
                         <option value="Arial" aria-checked="true">Arial</option>
@@ -108,7 +108,7 @@
                 </label>
                 <br>
                 <label for="">
-                    <strong>Size: </strong><input type="number" min="1" max="50" value="12"> pt
+                    <strong>Size: </strong><input id='input-font-size' type="number" min="1" max=50" value="40"> pt
                 </label>
             </form>
             <button class="close cf" id="closeText">
@@ -120,6 +120,7 @@
             <div class="icon">
                 <img src="/images/tool/add.svg">
             </div>
+            <input type="file" id="input-img" name="avatar" accept="image/png, image/jpeg" onchange="loadFile(event)" hidden>
             <span>Add image</span>
         </div>
         <div class="button" id="move">
@@ -150,19 +151,19 @@
     <div class="info">
         <div class="owner">
             <div class="userImage">
-                <img src="/images/home/butterfly.svg" alt="">
+                <img src=<%= user.avtURL %>  alt="">
             </div>
         </div>
         <div class="boardInfor">
             <div class="boardName tac">
-                <div>Board Name: <span>First Board Demo</span></div>
+                <div>Board Name: <span><%= whiteboardName %> </span></div>
             </div>
             <div class="boardID tac">
-                <div>Board ID: <span>612ce1995e6a5b57489a4e17</span></div>
-                <div><button><i class='bx bxs-copy'></i></button></div>
+                <div>Board ID: <span id="wb-code-info"><%= whiteboardCode %></span></div>
+                <div><button id='btn-copy'><i class='bx bxs-copy'></i></button></div>
             </div>
             <div class="userName tac">
-                <div>User Name: <span>Ngo Minh Phat</span></div>
+                <div>User Name: <span><%= user.name %></span></div>
                 <div><a href="/auth/logout">Logout</a></div>
             </div>
 
@@ -170,22 +171,9 @@
     </div>
 
     <div class="chat" id="chat">
-        <div class="navb">White Board Name</div>
+        <div class="navb">White Board: <span><%= whiteboardName %> </span></div>
 
-        <div class="chatbox" id="chatlog">
-            <div class="recived">
-                <div class="from">
-                    <img src="/images/home/dragonfly.svg" alt="">
-                </div>
-                <div class="mess R">Hi</div>
-            </div>
-
-            <div class="send">
-                <div class="mess S">Hello</div>
-                <div class="from">
-                    <img src="/images/home/dragonfly.svg" alt="">
-                </div>
-            </div>
+        <div class="chatbox" id="chatlog">     
         </div>
 
         <div class="chatsend">
