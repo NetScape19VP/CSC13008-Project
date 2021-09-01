@@ -13,7 +13,12 @@ document.addEventListener('mousemove', e => {
     if (e.pageX - val/2 < 90 && e.pageY - val/2 < 630) {
         // cursorp.style.left = 50 + "%";
         // cursorp.style.top = 50 + "%";
-    } else {
+    } 
+    else if (paint.tool === 'eraser') {
+        cursorp.style.left = (e.pageX - val) + "px";
+        cursorp.style.top = (e.pageY - val) + "px";
+    }
+    else {
         cursorp.style.left = (e.pageX - val/2) + "px";
         cursorp.style.top = (e.pageY - val/2) + "px";
     }
@@ -129,7 +134,7 @@ textbtn.addEventListener('click', () => {
         paint.setTool('text');
 })
 closetext.addEventListener('click', () =>{
-        txt.style.left = -300 + "px";
+        txt.style.left = -400 + "px";
         txt.style.opacity = 0;
 })
 
@@ -153,7 +158,8 @@ clear.addEventListener('click',() => {
 })
 clearAll.addEventListener('click', () => {
     paint.clearCanvas(paint.canvas.getContext("2d"), 0, 0, paint.canvas.width, this.canvas.height);
-    clearAll.style.left = -50 + "%";
+    /*clearAll.style.left = -50 + "%";*/
+    clearAll.style.top = -200 + "px";
     clearAll.style.opacity = 0;
     eraser=false;
 })
@@ -256,7 +262,8 @@ var arr1 = [pencil, lineWidth, cPicker, ShapeTools, textbtn, AddImg, movehand, g
 arr1.forEach(element => {
     element.addEventListener('click',() => {
         if(eraser==true) {
-            clearAll.style.left = -50 + "%";
+            //clearAll.style.left = -50 + "%";
+            clearAll.style.top = -200 + "px";
             clearAll.style.opacity = 0;
             eraser=false;
         }
@@ -296,7 +303,28 @@ arr4.forEach(element => {
 var arr5 = [pencil, clear, lineWidth, cPicker, ShapeTools, AddImg, movehand, grid, Download];
 arr5.forEach(element => {
     element.addEventListener('click',() => {
-        txt.style.left = -200 + "px";
+        txt.style.left = -400 + "px";
         txt.style.opacity = 0;
     })
+})
+var arr6 = [ShapeTools, textbtn, AddImg, movehand];
+arr6.forEach(element => {
+    element.addEventListener('click', () => {
+        cursorp.style.opacity = 0;
+    })
+})
+
+pencil.addEventListener('click',()=> {
+    cursorp.style.opacity = 1;
+    cursorp.style.borderRadius = 50 + "%";
+    cursorp.style.width = val + 'px';
+    cursorp.style.height = val +'px' ;
+})
+
+clear.addEventListener('click',()=> {
+    cursorp.style.opacity = 1;
+    cursorp.style.borderRadius = 0 + "%";
+    cursorp.style.backgroundColor =  'grey';
+    cursorp.style.width = 2*val + 'px';
+    cursorp.style.height = 2*val +'px' ;
 })

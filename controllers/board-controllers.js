@@ -20,8 +20,8 @@ const mainPageController = async (req, res) => {
         return recentBoards;
     }
     let recentBoards = await getRecentBoards(req.user.boards);
-    console.log('recentBoard after: ', recentBoards);
-    console.log(req.user);
+    //console.log('recentBoard after: ', recentBoards);
+    //console.log(req.user);
     res.render('mainPage', {
         user: req.user,
         recentBoards: recentBoards
@@ -70,7 +70,7 @@ function isValidWhiteboardName(whiteBoardName) {
 }
 
 const createWhiteboard = async (req, res, next) => {
-    console.log(req.body);
+    //console.log(req.body);
     if (!isValidWhiteboardName(req.body.roomName)) {
         res.json(JSON.stringify({
             status: 'failed',

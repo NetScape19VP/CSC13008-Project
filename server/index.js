@@ -73,6 +73,8 @@ app.use('/board', boardRouter)
 server.listen(process.env.PORT || port);
 
 
+var dataULR = '';
+
 // * server and client
 io.on("connection", async (socket) => {
     console.log('roomID ' + socket.id + " vua ket noi");
@@ -80,12 +82,29 @@ io.on("connection", async (socket) => {
     socket.on("disconnect", function () {
         console.log('roomID ' + socket.id + " vua ngat ket noi");
     });
-
+    socket.on('roomId', data => {
+        console.log(data);
+        socket.userInfo.room = data;
+    })
     socket.on('check', data => console.log(data));
+    socket.on('update', data => {
+        dataURL = data;
+    })
     socket.on('client-draw-line', data => {
         socket.broadcast.to(socket.userInfo.room).emit('server-send-line',data)
     });
-
+    socket.on('client-draw-rect', data => {
+        socket.broadcast.to(socket.userInfo.room).emit('server-send-rect',data)
+    });
+    socket.on('client-draw-text', data => {
+        socket.broadcast.to(socket.userInfo.room).emit('server-send-text',data)
+    });
+    socket.on('client-erase-img', data => {
+        socket.broadcast.to(socket.userInfo.room).emit('server-erase-img',data)
+    });
+    // socket.on('client-send-img', data => {
+    //     socket.broadcast.to(socket.userInfo.room).emit('server-send-img',data)
+    // })
     socket.on("Client-send-dataURL", function (dataURL) {
         dataURL_saving = dataURL;
     });

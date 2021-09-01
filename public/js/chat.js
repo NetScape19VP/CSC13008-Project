@@ -80,8 +80,8 @@ sendbtn.addEventListener('click', () => {
 
 
 socket.on('message', data => {
-	console.log('data', data.user._id);
-	console.log('userLocal', userLocal._id);
+	//console.log('data', data.user._id);
+	//console.log('userLocal', userLocal._id);
 	if (data.user._id != userLocal._id) {
 		newReceive(data.text, data.user)
 	}

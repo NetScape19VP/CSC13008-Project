@@ -343,6 +343,23 @@ class Paint {
             if (event.key === "Enter") {
                 this.drawText();
                 this.drawImage(canvas, tempCanvas, 0, 0);
+                
+                if (this.tool === 'text') {
+                    socket.emit(
+                        'client-draw-text',
+                        {
+                            textToDraw: this.boxInputContainer.querySelector('#input-text').value,
+                            font: `${this.fontSize}px ${this.fontFamily}`,
+                            color: this.color,
+                            curPos: {
+                                x: this.curPos.x,
+                                y: this.curPos.y
+                            }
+                        })
+                }
+
+                //send img through socket
+                //todo
                 this.boxInputContainer.hidden = true;
                 this.boxInputContainer.querySelector('#input-text').value = "";
                 this.isInputText = false;
@@ -352,6 +369,20 @@ class Paint {
         this.boxInputContainer.querySelector('#btn-submit-text').addEventListener('click', (event) => {
             this.drawText();
             this.drawImage(canvas, tempCanvas, 0, 0);
+            
+            if (this.tool === 'text') {
+                socket.emit(
+                    'client-draw-text',
+                    {
+                        textToDraw: this.boxInputContainer.querySelector('#input-text').value,
+                        font: `${this.fontSize}px ${this.fontFamily}`,
+                        color: this.color,
+                        curPos: {
+                            x: this.curPos.x,
+                            y: this.curPos.y
+                        }
+                    })
+            }
             this.boxInputContainer.hidden = true;
             this.boxInputContainer.querySelector('#input-text').value = "";
             this.isInputText = false;
@@ -423,6 +454,7 @@ class Paint {
                 0,
                 0);
             this.insertImgContainer.hide_showContainer('hide');
+            
             this.isInsertImg = false;
             this.tool = this.prevTool;
         });
@@ -507,6 +539,39 @@ class Paint {
             if (this.isDrawing === true) {
                 console.log('draw sth to main canvas');
                 this.drawImage(this.canvas, this.tempCanvas, 0, 0);
+                if (this.tool === 'rectangle') {
+                    socket.emit(
+                        'client-draw-rect',
+                        {
+                            color: this.color,
+                            endPos: {
+                                x: this.endPos.x,
+                                y: this.endPos.y
+                            },
+                            startPos: {
+                                x: this.startPos.x,
+                                y: this.startPos.y
+                            },
+                            lineWidth: this.lineWidth
+
+                        })
+                }
+                else if (this.tool === 'line') {
+                    socket.emit(
+                        'client-draw-line',
+                        {
+                            endPos: {
+                                x: this.endPos.x,
+                                y: this.endPos.y
+                            },
+                            startPos: {
+                                x: this.startPos.x,
+                                y: this.startPos.y
+                            },
+                            color: this.color,
+                            lineWidth: this.lineWidth
+                        })
+                }
             }
         } else {
             //do nothing
@@ -515,6 +580,7 @@ class Paint {
 
         this.isDrawing = false;
         this.isClearing = false;
+        
     }
 
     handleKeyPress(event) {
@@ -522,12 +588,12 @@ class Paint {
             this.drawText();
             this.boxInputContainer.hidden = true;
 
-            console.log("drew: ", this.boxInputContainer.value);
+            //console.log("drew: ", this.boxInputContainer.value);
             this.boxInputContainer.value = "";
         }
     }
     undo() {
-        console.log("undo called");
+        //console.log("undo called");
         let currentVersion = this.canvas.toDataURL();
         this.redoHistory.push(currentVersion);
 
@@ -598,15 +664,34 @@ class Paint {
             this.grid.hidden = curState;
         }
     }
-    clear() {
-        let context = this.canvas.getContext("2d");
-        context.clearRect(
-            this.curPos.x - this.lineWidth * 1,
-            this.curPos.y - this.lineWidth * 1,
-            this.lineWidth * 2,
-            this.lineWidth * 2
-        );
-        socket.emit()
+    clear(data) {
+        if (!data) {
+            let context = this.canvas.getContext("2d");
+            context.clearRect(
+                this.curPos.x - this.lineWidth * 1,
+                this.curPos.y - this.lineWidth * 1,
+                this.lineWidth * 2,
+                this.lineWidth * 2
+            );
+            socket.emit(
+                'client-erase-img',
+                {
+                    curPos: {
+                        x: this.curPos.x,
+                        y: this.curPos.y
+                    },
+                    lineWidth: this.lineWidth
+                })
+        }
+        else {
+            let context = this.canvas.getContext("2d");
+            context.clearRect(
+                data.curPos.x - data.lineWidth * 1,
+                data.curPos.y - data.lineWidth * 1,
+                data.lineWidth * 2,
+                data.lineWidth * 2
+            );
+        }
     }
 
 
@@ -643,11 +728,11 @@ class Paint {
                 socket.emit(
                     'client-draw-line',
                     {
-                        endPos: { 
+                        endPos: {
                             x: this.endPos.x,
                             y: this.endPos.y
                         },
-                        startPos: { 
+                        startPos: {
                             x: this.startPos.x,
                             y: this.startPos.y
                         },
@@ -657,6 +742,7 @@ class Paint {
             }
         }
         else {
+            //console.log(data);
             this.context.beginPath();
             this.context.moveTo(data.endPos.x, data.endPos.y);
             this.context.lineTo(data.startPos.x, data.startPos.y);
@@ -669,7 +755,7 @@ class Paint {
 
     //draw a dot to temp canvas
     drawDot() {
-        console.log(this.curPos);
+        //console.log(this.curPos);
         let radius = this.lineWidth / 2;
         this.tempContext.beginPath();
         this.tempContext.fillStyle = this.color;
@@ -682,35 +768,72 @@ class Paint {
     /**
      * Draw a rectangle to temp canvas
      */
-    drawRectangle() {
-        this.tempContext.strokeStyle = this.color;
-        this.tempContext.fillStyle = this.color;
-        this.tempContext.beginPath();
-        this.tempContext.rect(
-            this.startPos.x,
-            this.startPos.y,
-            this.endPos.x - this.startPos.x,
-            this.endPos.y - this.startPos.y
-        );
-        this.tempContext.closePath();
-        this.tempContext.stroke();
+    drawRectangle(data) {
+        if (!data) {
+            this.tempContext.strokeStyle = this.color;
+            this.tempContext.fillStyle = this.color;
+            this.tempContext.lineWidth = this.lineWidth;
+            this.tempContext.beginPath();
+            this.tempContext.rect(
+                this.startPos.x,
+                this.startPos.y,
+                this.endPos.x - this.startPos.x,
+                this.endPos.y - this.startPos.y
+            );
+            this.tempContext.closePath();
+            this.tempContext.stroke();
+
+
+        }
+        else {
+            this.context.strokeStyle = data.color;
+            this.context.fillStyle = data.color;
+            this.context.lineWidth = data.lineWidth;
+            this.context.beginPath();
+            this.context.rect(
+                data.startPos.x,
+                data.startPos.y,
+                data.endPos.x - data.startPos.x,
+                data.endPos.y - data.startPos.y
+            );
+            this.context.closePath();
+            this.context.stroke();
+        }
     }
 
-    drawText() {
-        let textToDraw = this.boxInputContainer.querySelector('#input-text').value;
+    drawText(data) {
+        if (!data) {
+            let textToDraw = this.boxInputContainer.querySelector('#input-text').value;
 
-        // //check
-        // console.log("draw text called", textToDraw);
+            // //check
+            // console.log("draw text called", textToDraw);
 
-        this.tempContext.font = `${this.fontSize}px ${this.fontFamily}`;
-        this.tempContext.fillStyle = this.color;
-        this.tempContext.strokeStyle = this.color;
-        this.tempContext.fillText(
-            textToDraw,
-            this.curPos.x,
-            this.curPos.y
-        );
-        this.tempContext.stroke();
+            this.tempContext.font = `${this.fontSize}px ${this.fontFamily}`;
+            this.tempContext.fillStyle = this.color;
+            this.tempContext.strokeStyle = this.color;
+            this.tempContext.fillText(
+                textToDraw,
+                this.curPos.x,
+                this.curPos.y
+            );
+            this.tempContext.stroke();
+        }
+        else {
+            let textToDraw = data.textToDraw;
+
+            // //check
+            // console.log("draw text called", textToDraw);
+
+            this.context.font = data.font;
+            this.context.fillStyle = data.color;
+            this.context.strokeStyle = data.color;
+            this.context.fillText(
+                textToDraw,
+                data.curPos.x,
+                data.curPos.y
+            );
+            this.context.stroke();
+        }
     }
     /**
      * draw image (overlay) from tempCanvas to main canvas
@@ -719,7 +842,7 @@ class Paint {
      * @param {int} sx source x-offset
      * @param {int} sy source x-offset
      */
-    drawImage(mainCanvas, tempCanvas, sx, sy) {
+    drawImage(mainCanvas, tempCanvas, sx, sy, server) {
         /**
          * @reference  https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
          */
@@ -732,42 +855,51 @@ class Paint {
             this.tempCanvas.width,
             this.tempCanvas.height
         );
+        if (this.tool !== 'pen') {
+            socket.emit('client-send-img', tempCanvas.toDataURL());
+        }
+
     }
 
     /**
      * clear temp canvas and draw insert image to
      * @param {object} posToDraw {x: number, y: number}
      */
-    drawInsertImage(posToDraw) {
-        //clear rect before drawing image
-        this.clearCanvas(this.tempContext, 0, 0, this.tempCanvas.width, this.tempCanvas.height);
-        let sx = 0,
-            sy = 0,
-            sw = this.insertImgContainer.DOM.querySelector('#insert-img').width,
-            sh = this.insertImgContainer.DOM.querySelector('#insert-img').height,
-            dx = this.curPos.x - this.insertImgContainer.cursorPosition.x,
-            dy = this.curPos.y - this.insertImgContainer.cursorPosition.y,
-            dw = this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().width,
-            dh = this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().height;
+    drawInsertImage(posToDraw, data) {
+        if (!data) {
+            //clear rect before drawing image
+            this.clearCanvas(this.tempContext, 0, 0, this.tempCanvas.width, this.tempCanvas.height);
+            let sx = 0,
+                sy = 0,
+                sw = this.insertImgContainer.DOM.querySelector('#insert-img').width,
+                sh = this.insertImgContainer.DOM.querySelector('#insert-img').height,
+                dx = this.curPos.x - this.insertImgContainer.cursorPosition.x,
+                dy = this.curPos.y - this.insertImgContainer.cursorPosition.y,
+                dw = this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().width,
+                dh = this.insertImgContainer.DOM.querySelector('.crop').getBoundingClientRect().height;
 
-        if (typeof posToDraw !== 'undefined') {
-            dx = posToDraw.x;
-            dy = posToDraw.y;
+            if (typeof posToDraw !== 'undefined') {
+                dx = posToDraw.x;
+                dy = posToDraw.y;
+            }
+
+            //draw
+            let src = this.insertImgContainer.DOM.querySelector('#insert-img');
+            this.tempContext.drawImage(
+                src,
+                sx,
+                sy,
+                sw,
+                sh,
+                dx,
+                dy,
+                dw,
+                dh
+            )
         }
+        else {
 
-        //draw
-        let src = this.insertImgContainer.DOM.querySelector('#insert-img');
-        this.tempContext.drawImage(
-            src,
-            sx,
-            sy,
-            sw,
-            sh,
-            dx,
-            dy,
-            dw,
-            dh
-        )
+        }
     }
 
     /**

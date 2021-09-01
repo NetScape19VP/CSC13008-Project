@@ -323,18 +323,22 @@ div > * {
 /*font style*/
 .text {
     display: flex;
-    text-align: center;
+    text-align: left;
     align-items: center;
     position: absolute;
     top: 340px;
-    left: -300px;
+    left: -400px;
     opacity: 0;
     height: 50px;
-    width: 250px;
+    width: 220px;
     background: burlywood;
     border-radius: 10px;
     transition: all 0.3s ease;
     padding: 10px;
+}
+
+.text label input{
+    width: 100px;
 }
 
 /*eraser clear*/

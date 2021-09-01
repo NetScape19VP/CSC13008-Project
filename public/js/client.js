@@ -4,9 +4,30 @@
 
 
 $(document).ready(() => {
+    socket.emit('roomId', whiteboardLocalCode)
     socket.on('server-send-line',data => {
         paint.drawLine(data);
     });
+    socket.on('server-send-rect',data => {
+        paint.drawRectangle(data);
+    });
+    socket.on('server-send-text',data => {
+        //console.log('text',data);
+        paint.drawText(data);
+    });
+    socket.on('server-erase-img', data => {
+        paint.clear(data);
+    })
+    socket.on('server-erase-img', data => {
+        paint.clear(data);
+    })
+    socket.on('data', data => {
+        this.applyData(data);
+    })
+    // socket.on('server-send-img', data => { 
+    //     //console.log(data);
+    //     paint.drawImage(this.canvas, null, 0, 0, data)
+    // })
     socket.on("Server-send-user", (dataURL) => {
         deserialize(dataURL, canvas);
     });

@@ -56,7 +56,6 @@ passport.use(
         callbackURL: `${myURL}/auth/facebook/callback`,
         profileFields: ['id', 'displayName', 'picture.type(large)']
     }, (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
         //passport callback func
         User.findOne({ userId: profile.id, accountType: 'facebook' }).then((currentUser) => {
             //check if user already exist in  DB
