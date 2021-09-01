@@ -10,3 +10,5 @@ const whiteboardsSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('whiteboards', whiteboardsSchema);
+
+//change name of whiteboardSchema file
