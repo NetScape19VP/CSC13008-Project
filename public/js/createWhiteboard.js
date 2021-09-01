@@ -1,6 +1,6 @@
 async function createWhiteBoard (whiteboardName) {
 	// send req to server
-	const rawRes = await fetch('http://localhost:3000/board/create', {
+	const rawRes = await fetch(`${MY_URL}board/create`, {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'

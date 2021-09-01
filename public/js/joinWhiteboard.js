@@ -2,7 +2,7 @@ async function joinWhiteboard(WBCode) {
 
 	//send req to server
 
-	const rawRes = await fetch('http://localhost:3000/board/join',
+	const rawRes = await fetch(`${MY_URL}board/join`,
 		//data    
 		{
 			headers: {

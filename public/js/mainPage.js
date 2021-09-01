@@ -149,7 +149,7 @@ async function checkValidData() {
             console.log(resultOfCreating);
             if (resultOfCreating.status === "success") {
                 //redirect to created whiteboard
-                window.location.href = `/board/${resultOfCreating.whiteboardCode}`;
+                window.location.href = `https://co-op-whiteboard.herokuapp.com/board/${resultOfCreating.whiteboardCode}`;
                 document.getElementById("message").innerHTML = '';
 
             }

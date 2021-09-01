@@ -20,7 +20,7 @@ passport.use(
         //option for gg strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: `https://co-op-whiteboard.herokuapp.com/auth/google/callback`
+        callbackURL: `${myURL}auth/google/callback`
 
     }, async (accessToken, refreshToken, profile, done) => {
         //passport callback func
@@ -53,11 +53,11 @@ passport.use(
     new FacebookStrategy({
         clientID: keys.facebook.clientID,
         clientSecret: keys.facebook.clientSecret,
-        callbackURL: `${myURL}/auth/facebook/callback`,
+        callbackURL: `${myURL}auth/facebook/callback`,
         profileFields: ['id', 'displayName', 'picture.type(large)']
-    }, (accessToken, refreshToken, profile, done) => {
+    }, async (accessToken, refreshToken, profile, done) => {
         //passport callback func
-        User.findOne({ userId: profile.id, accountType: 'facebook' }).then((currentUser) => {
+        await User.findOne({ userId: profile.id, accountType: 'facebook' }).then((currentUser) => {
             //check if user already exist in  DB
             if (currentUser) {
                 //user exist

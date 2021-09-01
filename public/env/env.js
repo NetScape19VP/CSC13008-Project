@@ -1,0 +1,1 @@
+const MY_URL = 'https://co-op-whiteboard.herokuapp.com/'
